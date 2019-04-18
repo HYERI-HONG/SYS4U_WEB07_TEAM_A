@@ -1,0 +1,120 @@
+package kr.sys4u.spring.instagram.core.service.post;
+
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import kr.sys4u.spring.instagram.core.dto.post.Hashtag;
+import kr.sys4u.spring.instagram.core.dto.post.Post;
+import kr.sys4u.spring.instagram.core.dto.post.PostImage;
+import kr.sys4u.spring.instagram.core.repository.post.HashtagRepository;
+import kr.sys4u.spring.instagram.core.repository.post.PostImageRepository;
+import kr.sys4u.spring.instagram.core.repository.post.PostLikeRepository;
+import kr.sys4u.spring.instagram.core.repository.post.PostRepository;
+
+@Service
+public class PostService {
+	private static Logger LOGGER = LoggerFactory.getLogger(PostService.class);
+
+	@Autowired
+	private PostRepository postRepository;
+	@Autowired
+	private PostImageRepository postImageRepository;
+	@Autowired
+	private HashtagRepository hashtagRepository;
+	@Autowired
+	private PostLikeRepository postLikeRepository;
+	@Autowired
+	private Environment environment;
+	
+	public List<Post> findList(String hashtag, int row, int memberNo){
+		return postRepository.findSome(hashtag, row, memberNo);
+	}
+	
+	public Post findOne(Map<String, Object> postRequest){
+		return postRepository.findOne(postRequest);
+	}
+	
+	public int likeyn(int postNo, int likeNo, int memberNo){
+		return postLikeRepository.likeyn(postNo, likeNo, memberNo);
+	}
+
+	public String likeInsert(int postNo, int memberNo){
+		String success = "";
+		int ilikecount = 0;
+		try {
+			ilikecount = postLikeRepository.likeSelect(postNo, memberNo);
+			LOGGER.debug("---------------------------ilikecount : " + ilikecount);
+			if (ilikecount == 0) {
+				postLikeRepository.likeInsert(postNo, memberNo);
+				success = "InsertOK";
+			} else {
+				postLikeRepository.likeDelete(postNo, memberNo);
+				success = "DeleteOK";
+			}
+		}catch(Exception e) {
+			success = "false";
+			LOGGER.debug(success);
+		}
+		return success;
+	}
+	
+	@Transactional
+	public String insert(Post post, MultipartFile file) {
+		post.setPostImage(parseFile(file));
+		LOGGER.debug("---------------------------post : " + post);
+		LOGGER.debug("---------------------------file : " + file);
+		
+		//try {
+			LOGGER.debug("postInsert");
+			postRepository.insert(post);
+			int currVal = postRepository.getSequence();
+			for(String pHashtag: post.getHashtagList()) {
+				LOGGER.debug("for hash");
+				Hashtag hashtag = new Hashtag();
+				hashtag.setName(pHashtag);
+				hashtag.setPostNo(currVal);
+				hashtagRepository.insert(hashtag);
+			}
+			LOGGER.debug("hashtagInsert");
+
+			PostImage postImage = post.getPostImage();
+			postImage.setPostNo(currVal);
+			postImageRepository.insert(postImage);
+			LOGGER.debug("postImageInsert");
+			LOGGER.debug("after Insert");
+		//}catch(Exception e) {
+//			LOGGER.error(e.toString());
+//			LOGGER.error("insert FAIL");
+//			return "false";
+		//}
+		
+		return "true";
+	}
+
+	public PostImage parseFile(MultipartFile file) {
+		PostImage postImage = new PostImage();
+		String strFile = file.getOriginalFilename();
+		String filePath = environment.getProperty("fileupload-upload-dir");
+		String fileName = strFile.substring(0, strFile.lastIndexOf("."));
+		String fileExtension = strFile.substring(strFile.lastIndexOf(".")+1);
+		LOGGER.debug("file : " + filePath + "/" + fileName + "."+ fileExtension);
+		postImage.setPath(filePath);
+		postImage.setName(fileName);
+		postImage.setExtension(fileExtension);
+		
+		return postImage;
+	}
+
+	public Post confirmMyPost(Map<String, String> post) {
+		
+		return postRepository.confirmMyPost(post);
+	}
+}

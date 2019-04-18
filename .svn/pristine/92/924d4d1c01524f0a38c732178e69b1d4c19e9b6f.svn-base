@@ -1,0 +1,164 @@
+(function(global, doc) {
+	$.namespace("instagram.PostList");
+	instagram.PostList = function(){
+		this.initialized();
+		var that = this;
+		$("#eventSource").on("instagram.PostList.initialized", function(e){
+			that.fetchList();
+		});
+	};
+	
+	instagram.PostList.prototype.initialized = function(){
+		console.log("initialized");
+		
+	};
+	
+	instagram.PostList.prototype.destroy = function(){
+		console.log("destroyed");
+	};
+	
+	instagram.PostList.prototype.fetchList = function(){
+		console.log("fetch list with ajax call");
+	};
+	
+	var postList = new instagram.PostList();
+	
+	$(function(){
+		$("#eventSource").trigger("instagram.PostList.initialized");
+	});
+	
+	var isEnd = false;
+
+	$(function(){
+	  $("#eventSource").on("scroll_bottom", function(e){
+		  fetchList();
+	  });
+	  
+	  $("#eventSource").on("app_initialized", function(e){
+		  fetchList();
+	  });
+	  
+
+	  $("#eventSource").trigger("app_initialized");
+	});
+	
+
+	var fetchList = function(){
+	  if(isEnd == true){
+	    return;
+	  }
+	  
+	  var param = {
+		  	searchKey : $("#searchKey").val() || "id",
+			searchValue : $("#searchValue").val() || "",
+			start :  $("#main-content span").last().data("no") + 1 || 1
+	  }
+	  
+	  $.ajax({
+			type : "GET",
+			url : "list.do",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : param,
+			success : function(data) {
+				if (data.length < 3) { //
+				    isEnd = true;
+				}
+				
+				$.each(data, function(index, vo) {
+			        renderList(false, vo);
+				})
+			},
+			error : function(e) {
+				console.log(e.responseText);
+			}
+		});
+	  
+	}
+
+	var renderList = function(mode, vo){
+		this.vo = vo;
+		const html = `
+		<span data-no="${this.vo.rnum}">no : ${this.vo.no}</span> <br/>
+		memberNo : ${this.vo.memberNo} <br/>
+		content : ${this.vo.content} <br/>
+		createdDate : ${this.vo.createdDate} <br/>
+		updatedDate : ${this.vo.updatedDate} <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		`;
+		
+		if( mode ){
+		  $("#main-content").prepend(html);
+		} else{
+		  $("#main-content").append(html);
+		}
+
+	}
+
+//	$.namespace("instagram.postMain.appendPost");
+//	$.namespace("instagram.postMain.appendPosts");
+//
+//	instagram.postMain.appendPost = function(post) {
+//		this.type = "UI-Component";
+//		this.memberNo = post.memberNo;
+//		this.content = post.content;
+//		this.createdDate = post.createdDate;
+//		this.updatedDate = post.updatedDate;
+//		this.getHTML = function(){
+//			return `
+//			<div>
+//				memberNo : ${this.memberNo}, 
+//				content : ${this.content}, 
+//				createdDate : ${this.createdDate}, 
+//				updatedDate : ${this.updatedDate}
+//			</div>
+//			`
+//		}
+//	}
+//	
+//	instagram.postMain.appendPosts = function(posts) {
+//		var innerPostHTML = '';
+//		for(var i = 0 ; i < posts.length ; i ++){
+//			var post = new instagram.postMain.appendPost(posts[i]);
+//			innerPostHTML += post.getHTML();
+//		}
+//
+//		this.myPostList = innerPostHTML;
+//
+//		this.getHTML = function() {
+//			const html = `<div class='list' id='postlist'>${this.myPostList}</div>`
+//			return html;
+//		}
+//
+//	}
+//	
+//	
+//	 global.onload = function() {
+//	
+//		 /**
+//		 * el로 받을수 없는데 param을 동적으로 세팅하는 방법?
+//		 */
+//		 var param = {
+//			 searchKey : "id",
+//			 searchValue : "1",
+//			 start : 1
+//		 }
+//		
+//		 $.ajax({
+//			 type : "GET",
+//			 url : "list.do",
+//			 dataType : 'json',
+//			 contentType : 'application/json',
+//			 data : param,
+//			 success : function(data) {
+//				 var list = new instagram.postMain.appendPosts(data);
+//				 $("#main-content").append(list.getHTML());
+//				 console.log(data);
+//			 },
+//			 error : function(e) {
+//				 console.log(e.responseText);
+//			 }
+//		 });
+//	 }
+	
+
+}(window, document))

@@ -1,0 +1,56 @@
+(function(global, doc){
+   
+   $.namespace("instagram.body.list");
+   instagram.body.list = function(){
+      console.log("global");
+      this.initialize();
+   };
+   
+   instagram.body.list.prototype.initialize = function(){
+      console.log("initialize");
+      var that = this;
+      $.ajax({
+          url : '/sys4u/list.do',
+          method : 'GET',
+          contentType : 'application/json',
+          success : d=>{
+            console.log("success");
+             that.render(d);
+          },
+          error : (m1,m2,m3)=>{
+             alert("error발생");
+          }
+       });
+   };
+   
+   instagram.body.list.prototype.destroy = function(){
+      console.log("destroy");
+   }
+
+   instagram.body.list.prototype.render = function(posts){
+      console.log("makeHtml");
+      var innerHTML = ``;
+      $.each(posts,(key, post)=>{
+         var likeUser = "";
+         if(post.postLike.totalCount > 0){
+        	 likeUser = post.postLike.recentLikedUser + "님 외 " + (post.postLike.totalCount*1-1) + "명이 좋아합니다.";
+         }
+         console.log(post.member.memberImage.extension);
+         innerHTML += `
+        	 <div style="border:1px solid black; width:500px">
+        	 	<img src="${_imageUrl}/${post.member.memberImage.name}.${post.member.memberImage.extension}" width="30px" height="30px"/>
+        	 	writer : ${post.member.loginID}
+        	 	<br />
+        	 	content : ${post.content} <br />
+        	 	${likeUser} 
+         	 </div>
+         	 <br/>
+        `;
+      });
+      
+      $('#content').html(innerHTML);
+      
+   }
+   
+   
+}(window, document));

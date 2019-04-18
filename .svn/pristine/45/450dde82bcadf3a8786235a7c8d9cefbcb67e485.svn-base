@@ -1,0 +1,24 @@
+package kr.sys4u.spring.instagram.web.controller.home;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import kr.sys4u.spring.instagram.core.repository.member.MemberRepository;
+import kr.sys4u.spring.instagram.web.controller.AbstractController;
+
+@Controller
+public class HomeController extends AbstractController{
+	
+	@Autowired
+	private MemberRepository memberMapper;
+	
+	@GetMapping("/home.do")
+	public String home(HttpServletRequest request,Model model) {
+		return "member/login";
+	}
+	
+}

@@ -1,0 +1,31 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<!-- 외부 라이브러리 -->
+	<%@include file="/WEB-INF/jsp/common/env.jsp" %>
+ 	<link rel="stylesheet" href="<%=_cssUrl %>/common.css" />
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- 공통 -->
+ 	<script src="<%=_jsUrl %>/common/common.js"></script> 
+ 	<script src="<%=_jsUrl %>/common/main.js"></script>
+ 	<!-- 개인  -->
+ 	<script src="<%=_jsUrl %>/post/jeong.js"></script>
+	<script src="<%=_jsUrl %>/member/shin.js"></script>
+
+<head>
+<script type="text/javascript"></script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form name="loginForm" method="post">
+		<input type="text" name="loginID" /><span>id</span><br> 
+		<input type="password" name="password" /><span>password</span><br>
+</form>
+<input type="button" value="로그인" id="memLogin"/>
+<input type="button" value="회원가입" id="memJoinPage" />
+<div id="eventSource" style="display: hidden"></div>
+</body>
+</html>

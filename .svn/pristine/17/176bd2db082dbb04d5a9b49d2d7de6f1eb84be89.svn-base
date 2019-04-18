@@ -1,0 +1,9 @@
+package kr.sys4u.spring.instagram.web.controller.post;
+
+import org.springframework.stereotype.Controller;
+
+//update, delete, insert 처리
+@Controller
+public class PostUpdateController {
+
+}

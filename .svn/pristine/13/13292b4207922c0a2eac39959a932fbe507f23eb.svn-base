@@ -1,0 +1,19 @@
+package kr.sys4u.spring.instagram.core.service.member;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+
+import kr.sys4u.spring.instagram.core.dto.member.Member;
+import kr.sys4u.spring.instagram.core.repository.member.MemberRepository;
+
+@Configuration
+public class MemberService {
+
+	@Autowired
+	private MemberRepository memberRepository;
+	
+	public Member LoginCheck(String memberId) {
+		
+		return memberRepository.findOne(memberId);
+	}
+}

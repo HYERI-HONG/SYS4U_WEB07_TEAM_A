@@ -1,0 +1,16 @@
+package kr.sys4u.spring.instagram.core.dto.post;
+
+import java.util.Date;
+
+import lombok.Data;
+
+@Data
+public class PostReply {
+    private Short no;
+    private Short postNo;
+    private Short memberNo;
+    private String content;
+    private String deleted;
+    private Date createdDate;
+    private Date updatedDate;
+}

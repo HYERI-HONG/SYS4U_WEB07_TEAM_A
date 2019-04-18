@@ -1,0 +1,28 @@
+package kr.sys4u.spring.instagram.web.controller.post;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.sys4u.spring.instagram.core.dto.post.Post;
+import kr.sys4u.spring.instagram.core.service.post.PostService;
+import kr.sys4u.spring.instagram.web.controller.AbstractController;
+
+//search, list 처리
+@Controller
+public class PostListController extends AbstractController{
+	@Autowired
+	private PostService postService;
+	
+	@GetMapping("list.do")
+	public @ResponseBody List<Post> list(String hashtag) {
+		LOGGER.debug("LIST");
+		List<Post> posts = postService.findList(hashtag);
+		LOGGER.debug(posts.get(0).toString());
+		
+		return posts;
+	}
+}

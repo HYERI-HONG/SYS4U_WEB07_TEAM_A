@@ -1,0 +1,175 @@
+$.namespace = function() {
+		var a = arguments, o = null, i, j, d;
+		for (i = 0; i < a.length; i = i + 1) {
+			d = a[i].split(".");
+			o = window;
+			for (j = 0; j < d.length; j = j + 1) {
+				o[d[j]] = o[d[j]] || {};
+				o = o[d[j]];
+			}
+		}
+
+		return o;
+	};
+
+(function(w, doc, $) {
+	$(doc).ready(function() {
+				
+				$.namespace("instagram.MemLogin");
+				instagram.MemLogin =  function(){
+					this.initialized();
+					var that = this;
+					$("#eventSource").on("instagram.MemLogin.initialized", function(e){
+						that.fetch();
+					});
+				};
+				
+				instagram.MemLogin.prototype.initialized = function(){
+					console.log("initialized");
+				};
+				
+				instagram.MemLogin.prototype.destroy = function(){
+					console.log("destroyed");
+				};
+				
+				instagram.MemLogin.prototype.fetch = function(){
+					console.log("fetch list with ajax call");
+					var form = document.loginForm;
+					form.action = _cpath + "/memLogin.do";
+					form.submit();
+				};
+				var memLogin = new instagram.MemLogin();
+				
+				//---------------------------------------------
+				$.namespace("instagram.MemJoinPage");
+				instagram.MemJoinPage = function() {
+					this.initialized();
+					var that = this;
+					$("#eventSource").on("instagram.MemJoinPage.initialized", function(e){
+						that.fetch();
+					});
+				};
+				
+				instagram.MemJoinPage.prototype.initialized = function(){
+					console.log("initialized");
+				};
+				
+				instagram.MemJoinPage.prototype.destroy = function(){
+					console.log("destroyed");
+				};
+				
+				instagram.MemJoinPage.prototype.fetch = function(){
+					location.href = _cpath +"/memJoinPage.do";
+				};
+
+				var memJoinPage = new instagram.MemJoinPage();
+				
+				//---------------------------------------------
+
+				$.namespace("instagram.MemInsert");
+				instagram.MemInsert = function() {
+					this.initialized();
+					var that = this;
+					$("#eventSource").on("instagram.MemInsert.initialized", function(e){
+						that.fetch();
+					});
+				};
+				
+				instagram.MemInsert.prototype.initialized = function(){
+					console.log("initialized");
+				};
+				
+				instagram.MemInsert.prototype.destroy = function(){
+					console.log("destroyed");
+				};
+				
+				instagram.MemInsert.prototype.fetch = function(){
+					var dupCheck = localStorage.getItem("dupCheck");
+					if (dupCheck=="Y" || dupCheck=="" || dupCheck==null) {
+						alert("아이디 중복체크를 해주세요.");
+						return;
+					}
+					
+					var form = document.JoinForm;
+					form.action = _cpath + "/memJoin.do";
+					form.submit();
+					localStorage.removeItem("dupCheck");
+				};
+
+				var memInsert = new instagram.MemInsert();
+
+				//-------------------------------------------------------
+				
+				$.namespace("instagram.DupCheck");
+				instagram.DupCheck = function() {
+					this.initialized();
+					var that = this;
+					$("#eventSource").on("instagram.DupCheck.initialized", function(e){
+						that.fetch();
+					});
+				};
+				
+				instagram.DupCheck.prototype.initialized = function(){
+					console.log("initialized");
+				};
+				
+				instagram.DupCheck.prototype.destroy = function(){
+					console.log("destroyed");
+				};
+				
+				instagram.DupCheck.prototype.fetch = function(){
+					var dupId = $('#loginID').val();
+					if (dupId == null || dupId == "") {
+						alert("ID을 입력해주세요.");
+						return;
+					}
+					$.ajax({
+						type : "POST",
+						url : _cpath + "/idDupcheck.do",
+						data : {
+							dupId : dupId
+						},
+//						dataType : "json",
+						success : function(data) {
+							var check = data.trim();
+							if (check == 'Y') { // 이름이 겹친경우
+								alert("같은 ID가 이미 존재합니다.  '" + dupId + "' 으로 회원가입할 수 없습니다.");
+								localStorage.setItem("dupCheck", 'Y');
+//								localStorage.clear();
+							} else {
+								alert("중복되지 않는 이름입니다.");
+								localStorage.setItem("dupCheck", 'N');
+							}
+						},
+						error : function(e) {
+							console.log(e);
+							alert("에러발생");
+						}
+					});
+				};
+				var dupCheck = new instagram.DupCheck();
+				
+				
+				$(function(){
+					//login.jsp
+					  $("#memLogin").on("click", function(e){
+						  $("#eventSource").trigger("instagram.MemLogin");
+					  });
+					  
+					  $("#memJoinPage").on("click", function(e){
+						  $("#eventSource").trigger("instagram.MemJoinPage");
+					  });
+					  
+					 //join.jsp
+					  $("#memInsert").on("click", function(e){
+						  $("#eventSource").trigger("instagram.MemInsert");
+					  });
+					  
+					  $("#dupCheck").on("click", function(e){
+						  $("#eventSource").trigger("instagram.DupCheck");
+					  });
+					  
+					});
+			})
+
+}(window, document, jQuery));

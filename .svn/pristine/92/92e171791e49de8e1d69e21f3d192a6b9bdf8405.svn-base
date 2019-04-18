@@ -1,0 +1,56 @@
+(function(global,doc){
+	
+	$(function(){
+		
+		$.namespace("instagram.body.DetailPage");
+		instagram.body.DetailPage = function(){
+			this.postNo;
+			
+		};
+		
+		instagram.body.DetailPage.prototype.initialize = function(postNo){
+			this.postNo = postNo;
+		};
+		instagram.body.DetailPage.prototype.render = function(){
+			
+			$('#content').empty();
+			$('<div/>').attr({id:'cotent_detail_div'}).appendTo($('#content'));
+			
+			$('#cotent_detail_div').append(
+					
+					$('<div/>').attr({id:'detail_image_div'}).append(
+						$('<img/>').attr({id:'detail_image',src:_imageUrl+'/upload/post/54/post02.jpg'})
+					),
+					$('<div/>').attr({id:'detail_content'}).append(
+						$('<div/>').attr({id:'detail_memberInfo_section'}),	
+						$('<div/>').attr({id:'detail_replyList_section'}),	
+						$('<div/>').attr({id:'detail_likeit_section'}),	
+						$('<div/>').attr({id:'detail_writtingReply_section'})	
+					)
+			
+			);
+			//detail_memberInfo_section
+			$('#detail_memberInfo_section')
+			
+			//detail_replyList_section
+			$('#detail_replyList_section')
+			
+			//detail_likeit_section
+			$('#detail_likeit_section')
+			
+			//detail_writtingReply_section
+			$('#detail_writtingReply_section')
+			
+			
+			
+		}
+		
+		instagram.body.DetailPage.prototype.destroy = function(){
+			
+			//ignore 
+			
+		};
+		
+	});
+	
+}(window, document))

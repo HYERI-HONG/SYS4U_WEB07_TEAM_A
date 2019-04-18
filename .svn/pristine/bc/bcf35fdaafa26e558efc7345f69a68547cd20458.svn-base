@@ -1,0 +1,12 @@
+package kr.sys4u.spring.instagram.core.exception;
+
+import java.io.IOException;
+
+public class FileTransferFailedException extends Exception {
+	private static final long serialVersionUID = -9127280803166159389L;
+
+	public FileTransferFailedException(Exception e) {
+		// TODO Auto-generated constructor stub
+	}
+
+}

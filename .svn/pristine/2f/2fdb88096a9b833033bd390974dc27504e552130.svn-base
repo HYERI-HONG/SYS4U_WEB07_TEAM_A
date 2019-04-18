@@ -1,0 +1,33 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- 외부 라이브러리 -->
+<%@include file="/WEB-INF/jsp/common/env.jsp"%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="<%=_jsUrl%>/common/common.js"></script>
+<script src="<%=_jsUrl%>/member/shin.js"></script>
+<link rel="stylesheet" href="<%=_cssUrl %>/common.css" />
+<link rel="stylesheet" href="<%=_cssUrl %>/shin.css" />	
+
+<head>
+<script type="text/javascript"></script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="bgimg">
+		<div class="page">
+		<!-- 			<img alt="logo" src="../../static-root/img/common/instagram-logo4.png"> -->
+		<form name="loginForm" method="post">
+				<span>id</span><input type="text" name="loginID" /><br> 
+				<span>password</span><input type="password" name="password" /><br>
+			<button class="snip1535" id="memLogin">로그인</button>
+			<button class="snip1535" id="memJoinPage">회원가입</button>
+		</form>
+		</div>
+		<div id="eventSource" style="display: hidden"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+(function(global, doc){
+	
+	$.namespace("instagram.body.form");
+	instagram.body.form = function(){
+		this.initialize();
+	};
+
+	instagram.body.form.porototype.initialize(){
+		console.log("form initialize");
+	};
+
+	instagram.body.form.porototype.destroy(){
+		console.log("form destroy");
+		$("#content").empty();
+		new instagram.body.list();
+	};
+
+	instagram.body.form.porototype.render(){
+		console.log("form render");
+	};
+	
+	instagram.body.form.porototype.insert(postNo, no){
+		console.log("form insert");
+		$.get(){
+			
+		}
+	};
+	
+}(window, document));

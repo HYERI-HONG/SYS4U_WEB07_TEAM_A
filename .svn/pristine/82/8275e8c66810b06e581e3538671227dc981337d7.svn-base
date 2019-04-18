@@ -1,0 +1,23 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<%@include file="/WEB-INF/jsp/common/env.jsp" %>
+<script type="text/javascript" src="<%=application.getContextPath()%>/static-root/js/member/shin.js"></script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form name="JoinForm" method="post" enctype="multipart/form-data">
+		<input type="text" name="loginID" id="loginID"><span>id</span> <input type="button" value="id중복검사" id="dupCheck"><br>
+		<input type="text" name="password"><span>password</span><br>
+		<input type="text" name="reMemPassword" id="rePassword"><span>password 재확인</span><br>
+		<span>내 프로필</span><input type="file" name="memberImage" accept="image/jpeg, image/png, image/gif"><br>
+		<input type="text" name="message"><span>상태메세지</span><br>
+</form>
+	<div id="eventSource" style="display: hidden"></div>
+	<input type="button" id="memInsert" value="회원가입하기" >
+</body>
+</html>

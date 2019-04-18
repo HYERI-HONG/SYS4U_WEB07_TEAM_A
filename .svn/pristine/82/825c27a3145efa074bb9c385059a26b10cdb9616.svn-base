@@ -1,0 +1,35 @@
+package kr.sys4u.spring.instagram.web.controller.post;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.sys4u.spring.instagram.core.dto.post.Post;
+import kr.sys4u.spring.instagram.core.repository.post.PostRepository;
+
+//search, list 처리
+@Controller
+public class PostListController {
+	@Autowired
+	private PostRepository postRepository;
+	
+	@GetMapping("list.do")
+	public @ResponseBody Map<String, Object> list() {
+		System.out.println("list.do");
+		Map<String, Object> posts = new HashMap<>();
+		
+		
+		posts.put("list", postRepository.findAll());
+//		for(Post post : posts) {
+//			int i = 0;
+//			System.out.println(i + ": " + post);
+//			i++;
+//		}
+		return posts;
+	}
+}

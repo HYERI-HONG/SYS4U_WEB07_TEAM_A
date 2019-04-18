@@ -1,0 +1,42 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>Team A Instagram</title>
+	
+	<!-- 외부 라이브러리 -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+ 	<!-- 공통 -->
+ 	<script src="${context}/static-root/js/common/common.js"></script> 
+ 	<link rel="stylesheet" href="${context}/static-root/css/common.css" />
+ 
+ 	<!-- 혜리 -->
+ 	<link rel="stylesheet" href="${context}/static-root/css/hong.css" />
+ 	<script src="${context}/static-root/js/member/hong.js"></script> 
+ 	<script src="${context}/static-root/js/post/hong.js"></script> 
+ 	
+ 	<!-- 재환 -->
+ 	<link rel="stylesheet" href="${context}/static-root/css/shin.css" />
+ 	<script src="${context}/static-root/js/member/shin.js"></script> 
+ 	<script src="${context}/static-root/js/post/shin.js"></script> 
+ 	
+ 	<!-- 담지 -->
+ 	<link rel="stylesheet" href="${context}/static-root/css/jeong.css" />
+ 	<script src="${context}/static-root/js/member/jeong.js"></script> 
+ 	<script src="${context}/static-root/js/post/jeong.js"></script> 
+
+</head>
+<body>
+	<div id="wrapper">
+		<div id = header></div>
+		<div id = content></div>
+		<div id = footer></div>	
+		<script>
+			common.init('${context}');
+		</script>
+	</div>
+</body>
+</html>

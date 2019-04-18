@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.sys4u.spring.instagram.core.repository.post.PostLikeRepository">
+   <select id="select" parameterType="Map" resultType="int">
+		SELECT COUNT(*) AS LIKECOUNT FROM POST_LIKE
+			WHERE POST_NO = #{postNo} AND MEMBER_NO = #{memberNo}
+   </select> 
+
+   <insert id="insert" parameterType="Map">
+      INSERT INTO POST_LIKE 
+      	(NO, MEMBER_NO, POST_NO)
+      	VALUES
+   	  	(SEQ_LIKE_POST.NEXTVAL, #{memberNo}, #{postNo})
+   </insert> 
+
+   <delete id="delete" parameterType="Map">
+		DELETE POST_LIKE
+			WHERE POST_NO = #{postNo} AND MEMBER_NO = #{memberNo}
+   </delete> 
+</mapper>

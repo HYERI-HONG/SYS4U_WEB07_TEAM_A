@@ -1,0 +1,23 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<%@include file="/WEB-INF/jsp/common/env.jsp" %>
+<script type="text/javascript" src="<%=application.getContextPath()%>/static-root/js/member/shin.js"></script>
+
+<head>
+<script type="text/javascript"></script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form name="loginForm" method="post">
+		<input type="text" name="loginID" /><span>id</span><br> 
+		<input type="password" name="password" /><span>password</span><br>
+</form>
+<input type="button" value="로그인" id="memLogin"/>
+<input type="button" value="회원가입" id="memJoinPage" />
+<div id="eventSource" style="display: hidden"></div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+(function(global, doc){
+	
+	$.namespace("instagram.body.myPage");
+	instagram.body.myPage = function(){
+		this.memberNo;
+		console.log('mypage');
+		
+	};
+	
+	instagram.body.myPage.prototype.initialize = function(memberNo){
+		this.memberNo = memberNo;
+		
+		$.getJSON(_cpath+'/myPage.do?memberNo='+memberNo, map=>{
+				var member = map.member;
+				console.log(member.message);
+			
+		});
+	};
+	instagram.body.myPage.prototype.render = function(){
+		
+		$('#content').empty();
+		$('<div/>').attr({id:'content_mypage'}).html(_userId + '님의 페이지입니다.').appendTo($('#content'));
+		
+		
+		
+	};
+	instagram.body.mypage.prototype.destroy = function(){
+		
+	};
+	
+}(window, document));

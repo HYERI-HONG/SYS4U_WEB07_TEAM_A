@@ -1,0 +1,106 @@
+(function(global, doc){
+   
+   $.namespace("instagram.body.list");
+   instagram.body.list = function(){
+      console.log("global");
+      this.initialize();
+   };
+   
+   instagram.body.list.prototype.initialize = function(){
+      console.log("initialize");
+      var contentsDiv = document.createElement("div");
+      contentsDiv.id ="contentsDiv";
+      
+      $('#content').html(contentsDiv);
+      var that = this;
+      var jsonData = {
+    		  hashtag : "test",
+    		  row : "1"
+      }
+      
+      $.get('/sys4u/list.do', function(jsonData){
+      }).done(function(data) {
+    	  	console.log("success");
+    	  	that.render(data);
+    	  	new instagram.body.list.more();
+		  })
+		  .fail(function() {
+			alert("error발생");
+		  });
+   };
+   
+   instagram.body.list.prototype.destroy = function(){
+      console.log("destroy");
+   }
+
+   instagram.body.list.prototype.render = function(posts){
+      console.log("makeHtml");
+      var that = this;
+      var i = 1;
+      $.each(posts,(key, post)=>{
+    	console.log("each start");
+        var postsDiv = document.createElement("div");
+         postsDiv.id ="postsDiv" + i;
+         innerHTML = this.postrender(post);
+
+         $(postsDiv).append(innerHTML);
+         $('#content').append(postsDiv);
+      });
+
+   }
+   
+   instagram.body.list.prototype.postrender = function(post){
+	   var likeUser = "";
+       if(post.postLike.totalCount > 0){
+      	 likeUser = post.postLike.recentLikedUser + "님 외 " + (post.postLike.totalCount*1-1) + "명이 좋아합니다.";
+       }
+       console.log(post.member.memberImage.extension);
+       return `
+      	 <div style="border:1px solid black; width:500px">
+      	 	<img src="${_imageUrl}/${post.member.memberImage.name}.${post.member.memberImage.extension}" width="30px" height="30px"/>
+      	 	writer : ${post.member.loginID}
+      	 	<br />
+      	 	content : ${post.content} <br />
+      	 	liked : ${post.postLike.liked} <br/>
+      	 	${likeUser} 
+       	 </div>
+       	 <br/>
+      `;
+   }
+   
+   $.namespace("instagram.body.list.more");
+   instagram.body.list.more = function(){
+      console.log("more");
+      //button 들어가는 div 생성 id = moreBtnDiv
+      //destroy 먼저 할 수 있나?
+      this.initialize();
+   };
+   
+   instagram.body.list.more.prototype.initialize = function(){
+	      console.log("more initialize");
+	      this.render();
+   };
+	   
+   instagram.body.list.more.prototype.destroy = function(){
+	 //moreBtnDiv 내용 삭제 (다시 그리기 위해서)
+      console.log("more destroy");
+   }
+
+   instagram.body.list.more.prototype.render = function(posts){
+      console.log("more makeHtml");
+      innerHTML = `<button id="btrMore">더보기</button>`;
+      
+      //moreBtnDiv에 append
+      $('#content').append(innerHTML);
+      
+   }
+   
+   $('#btrMore').bind('click', function() {
+	   //마지막 row값으로 instagram.body.list render
+   });
+   
+//   $('#btrMore').click(function () {
+//	   $('#btrMore').trigger('click');
+//   };
+
+}(window, document));

@@ -1,0 +1,40 @@
+package kr.sys4u.spring.instagram.core.service.member;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+
+import kr.sys4u.spring.instagram.core.dto.member.Member;
+import kr.sys4u.spring.instagram.core.dto.member.MemberImage;
+import kr.sys4u.spring.instagram.core.repository.member.MemberRepository;
+
+@Configuration
+public class MemberService {
+
+	@Autowired
+	private MemberRepository memberRepository;
+	
+	public Member getMemberById(String memberId) {
+		
+		return memberRepository.findOne(memberId);
+	}
+	
+	public int memberInsert(Member member) {
+		
+		return memberRepository.insert(member);
+	}
+	
+	public int memberInsertImage(MemberImage memberImage) {
+		
+		return memberRepository.insertImage(memberImage);
+	}
+	
+	public String dupCheck(String dupId) {
+		String dupStat="N";
+		int count = memberRepository.duplcheck(dupId);
+        if(count>0) {
+        	dupStat="Y";
+        }
+		return dupStat;
+	}
+	
+}

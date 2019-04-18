@@ -1,0 +1,74 @@
+package kr.sys4u.spring.instagram.core.service.member;
+
+import java.io.File;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import kr.sys4u.spring.instagram.core.dto.member.Member;
+import kr.sys4u.spring.instagram.core.dto.member.MemberImage;
+import kr.sys4u.spring.instagram.core.exception.FileTransferFailedException;
+import kr.sys4u.spring.instagram.core.repository.member.MemberRepository;
+
+@Configuration
+@Service
+public class MemberService {
+
+	@Autowired
+	private MemberRepository memberRepository;
+	
+	public Member getMemberById(String memberId) {
+		
+		return memberRepository.findOne(memberId);
+	}
+	
+	public int memberInsert(Member member) {
+		
+		return memberRepository.insert(member);
+	}
+	
+	public int memberInsertImage(MemberImage memberImage) {
+		
+		return memberRepository.insertImage(memberImage);
+	}
+	
+	public String dupCheck(String dupId) {
+		String dupStat="N";
+		int count = memberRepository.duplcheck(dupId);
+        if(count>0) {
+        	dupStat="Y";
+        }
+		return dupStat;
+	}
+
+	public Member getMember(Member inputVal) {
+		return memberRepository.getLoginMemberVal(inputVal);
+	}
+
+
+	@Transactional
+	public int memberInsert(Member member, MultipartFile file, String uploadDir) {
+		int resultCount =0;
+		resultCount += memberRepository.insert(member);
+		Member preMember= memberRepository.findOne(member.getLoginID());
+		String[] seperator = file.getOriginalFilename().split("\\.");
+		
+		MemberImage memberImage= new MemberImage();
+		memberImage.setMemberNo(preMember.getNo());
+		memberImage.setPath(uploadDir+"/memberImage/"+preMember.getNo());
+		memberImage.setName(seperator[0]);
+		memberImage.setExtension(seperator[1]);
+		resultCount += memberRepository.insertImage(memberImage);
+		File destFile = new File(uploadDir+"/memberImage/"+preMember.getNo(), seperator[0]);
+		try {
+			file.transferTo(destFile);
+		}catch (Exception e) {
+			throw new FileTransferFailedException(e);
+		}
+		return resultCount;
+	}
+	
+}

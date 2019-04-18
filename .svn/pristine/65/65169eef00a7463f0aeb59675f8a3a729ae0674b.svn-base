@@ -1,0 +1,37 @@
+package kr.sys4u.spring.instagram.core.repository.member;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import kr.sys4u.spring.instagram.core.dto.member.Member;
+import kr.sys4u.spring.instagram.core.dto.member.MemberExample;
+
+@Repository
+public interface MemberRepository {
+	
+	Member selectMember();
+	
+    long countByExample(MemberExample example);
+
+    int deleteByExample(MemberExample example);
+
+    int deleteByPrimaryKey(Short no);
+
+    int insert(Member record);
+
+    int insertSelective(Member record);
+
+    List<Member> selectByExample(MemberExample example);
+
+    Member selectByPrimaryKey(Short no);
+
+    int updateByExampleSelective(@Param("record") Member record, @Param("example") MemberExample example);
+
+    int updateByExample(@Param("record") Member record, @Param("example") MemberExample example);
+
+    int updateByPrimaryKeySelective(Member record);
+
+    int updateByPrimaryKey(Member record);
+}

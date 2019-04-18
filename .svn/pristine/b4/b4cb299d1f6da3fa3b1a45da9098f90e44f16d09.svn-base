@@ -1,0 +1,116 @@
+(function(global, doc){
+   
+   $.namespace("instagram.body.list");
+   instagram.body.list = function(){
+      this.initialize();
+   };
+   
+   instagram.body.list.prototype.initialize = function(hashtag, row){
+      console.log("initialize");
+      row = row != null ? row : 1;
+      
+      var that = this;
+      var jsonData = {
+    		  "hashtag" : hashtag,
+    		  "row" : row,
+    		  "member_no" : _no
+      }
+
+      console.log(jsonData);
+      
+      $.get('/sys4u/list.do', jsonData)
+      	.done(function(data) {
+    	  	console.log("success");
+    	  	that.render(data);
+    	  	new instagram.body.list.more();
+		  })
+		  .fail(function() {
+			alert("error발생");
+		  });
+   };
+   
+   instagram.body.list.prototype.destroy = function(){
+      console.log("destroy");
+   }
+
+   instagram.body.list.prototype.render = function(posts){
+      console.log("makeHtml");
+      var that = this;
+      var i = 1;
+      $.each(posts,(key, post)=>{
+    	console.log("each start");
+        var postsDiv = document.createElement("div");
+         postsDiv.id ="postsDiv" + i;
+         innerHTML = this.postrender(post);
+
+         $(postsDiv).append(innerHTML);
+         $('#content').append(postsDiv);
+         i++;
+      });
+
+   }
+   
+   instagram.body.list.prototype.postrender = function(post){
+	   var likeUser = "";
+	   likeUser = post.postLike.totalCount > 1 ?
+      	 post.postLike.recentLikedUser + "님 외 " + (post.postLike.totalCount*1-1) + "명이 좋아합니다."
+       : post.postLike.totalCount > 0 ?
+    	 post.postLike.recentLikedUser + "님이 좋아합니다."
+       : ""
+       
+       console.log(post.member.no);
+       return `
+      	 <div style="border:1px solid black; width:500px">
+      	 	<div class="writer">
+	      	 	<span class="goToMypage" value="${post.member.no}"><img src="${_imageUrl}/${post.member.memberImage.name}.${post.member.memberImage.extension}" width="30px" height="30px"/>
+	      	 	writer : ${post.member.loginID}
+	      	 	</span>
+      	 	</div>
+      	 	<div class="image">
+      	 		<img src="${_imageUrl}/${post.postImage.path}/${post.postImage.name}/.${post.postImage.extension}" width="30px" height="30px"/>
+      	 	</div>
+      	 	content : ${post.content} <br />
+      	 	liked : ${post.postLike.liked} <br/>
+      	 	${likeUser} 
+       	 </div>
+       	 <br/>
+      `;
+   }
+   
+   $.namespace("instagram.body.list.more");
+   instagram.body.list.more = function(){
+      console.log("more");
+      //button 들어가는 div 생성 id = moreBtnDiv
+      //destroy 먼저 할 수 있나?
+      this.initialize();
+   };
+   
+   instagram.body.list.more.prototype.initialize = function(){
+	      console.log("more initialize");
+	      this.render();
+   };
+	   
+   instagram.body.list.more.prototype.destroy = function(){
+	 //moreBtnDiv 내용 삭제 (다시 그리기 위해서)
+      console.log("more destroy");
+   }
+
+   instagram.body.list.more.prototype.render = function(posts){
+      console.log("more makeHtml");
+      innerHTML = `<button id="btrMore">더보기</button>`;
+      
+      //moreBtnDiv에 append
+      $('#content').append(innerHTML);
+      
+   }
+   
+   $('#btrMore').bind('click', function() {
+	   //마지막 row값으로 instagram.body.list render
+	   alert("more");
+   });
+   
+//   $('#btrMore').click(function () {
+//	   $('#eventSource').trigger('click');
+//   };
+
+}(window, document));

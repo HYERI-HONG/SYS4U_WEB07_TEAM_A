@@ -1,0 +1,31 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- 외부 라이브러리 -->
+<%@include file="/WEB-INF/jsp/common/env1.jsp"%>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- 공통 -->
+<script src="<%=_jsUrl%>/common/common.js"></script>
+<!-- 개인  -->
+<script src="<%=_jsUrl%>/member/shin.js"></script>
+<link rel="stylesheet" href="<%=_cssUrl %>/shin.css" />	
+
+
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form name="JoinForm" method="post" enctype="multipart/form-data">
+		<input type="text" name="loginID" id="loginID"><span>id</span> <input type="button" value="id중복검사" id="dupCheck"><br>
+		<input type="password" name="password" id="password"><span>password</span><br>
+		<span>내 프로필</span><input type="file" name="memberImage" id="memberImage" accept="image/jpeg, image/png, image/gif"><br>
+		<input type="text" name="message" id="message"><span>상태메세지</span><br>
+</form>
+	<div id="eventSource" style="display: hidden"></div>
+	<input type="button" id="memInsert" value="회원가입하기" >
+</body>
+</html>

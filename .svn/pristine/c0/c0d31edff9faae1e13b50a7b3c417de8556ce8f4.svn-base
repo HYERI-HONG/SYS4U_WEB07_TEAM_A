@@ -1,0 +1,14 @@
+package kr.sys4u.spring.instagram.core.service.member;
+
+import java.util.Map;
+
+import kr.sys4u.spring.instagram.core.dto.member.Member;
+import kr.sys4u.spring.instagram.core.dto.post.Post;
+
+public interface MemberPageService {
+	
+	public Map<String, Object> getMemberPage(int memberNo);
+	public Member getMemberByNo(int memberNo);
+	public Post getPostByMemberNo(int memberNo);
+
+}

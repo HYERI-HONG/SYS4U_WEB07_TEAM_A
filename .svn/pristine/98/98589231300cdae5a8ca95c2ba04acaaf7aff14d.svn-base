@@ -1,0 +1,19 @@
+package kr.sys4u.spring.instagram.core.repository.post;
+
+import java.util.List;
+import org.springframework.stereotype.Repository;
+
+import kr.sys4u.spring.instagram.core.dto.post.Post;
+
+@Repository
+public interface PostRepository {
+
+	public int insert(Post post);
+	public List<Post> findAll();
+	public List<Post> findSome(String word, int row);
+	public Post findOne(String word);
+	public int update(Post post);
+	public int delete(Post post);
+	public boolean exists(String word);
+	public int count();
+}

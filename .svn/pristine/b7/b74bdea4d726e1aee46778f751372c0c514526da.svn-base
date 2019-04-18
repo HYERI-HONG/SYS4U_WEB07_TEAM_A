@@ -1,0 +1,45 @@
+package kr.sys4u.spring.instagram.web.controller.member;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.sys4u.spring.instagram.core.service.member.MemberPageService;
+
+
+@Controller
+//@RequestMapping("/myPage.do")
+public class MemberPageController {
+	
+	
+
+	@GetMapping("/myPage.do")  
+	public @ResponseBody Map<String, Object> memberMyPage(@RequestParam ("memberNo") int memberNo){
+		
+		Map<String, Object> memberMyPage = new HashMap<>();
+		
+		
+	
+		return memberMyPage;
+		
+	}
+	
+//	public @ResponseBody Map<String, Object> memberMyPage(@PathVariable("memberNo") int memberNo){
+//		
+//		Map<String, Object> map = new HashMap<>();
+//		System.out.println("memberNo"+ memberNo);
+//		
+//		Member member = new Member();
+//		member.setMessage("상태메세지");
+//		map.put("member", member);
+//		return map;
+//		
+//	}
+
+
+}

@@ -1,0 +1,32 @@
+package kr.sys4u.spring.instagram.core.service.post;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+
+import kr.sys4u.spring.instagram.core.dto.post.Post;
+import kr.sys4u.spring.instagram.core.repository.post.PostRepository;
+
+@Configuration
+public class PostService {
+
+	@Autowired
+	private PostRepository postRepository;
+	
+	public List<Post> findList(String hashtag, String stringRow){
+		
+		int row = parseIntRow(stringRow);
+		System.out.println("service row : " + row);
+		return postRepository.findSome(parseHashtag(hashtag), row);
+	}
+	
+	private String parseHashtag(String hashtag) {
+		
+		return hashtag != null ? hashtag : "";
+	}
+
+	private int parseIntRow(String row) {
+		return row != null ? Integer.parseInt(row) : 1;
+	}
+}

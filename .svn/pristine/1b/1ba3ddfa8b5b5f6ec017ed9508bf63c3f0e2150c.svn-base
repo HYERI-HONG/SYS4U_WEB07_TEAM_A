@@ -1,0 +1,34 @@
+package kr.sys4u.spring.instagram.core.repository.post;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import kr.sys4u.spring.instagram.core.dto.post.PostImage;
+import kr.sys4u.spring.instagram.core.dto.post.PostImageExample;
+
+@Repository
+public interface PostImageRepository {
+    long countByExample(PostImageExample example);
+
+    int deleteByExample(PostImageExample example);
+
+    int deleteByPrimaryKey(Short postNo);
+
+    int insert(PostImage record);
+
+    int insertSelective(PostImage record);
+
+    List<PostImage> selectByExample(PostImageExample example);
+
+    PostImage selectByPrimaryKey(Short postNo);
+
+    int updateByExampleSelective(@Param("record") PostImage record, @Param("example") PostImageExample example);
+
+    int updateByExample(@Param("record") PostImage record, @Param("example") PostImageExample example);
+
+    int updateByPrimaryKeySelective(PostImage record);
+
+    int updateByPrimaryKey(PostImage record);
+}

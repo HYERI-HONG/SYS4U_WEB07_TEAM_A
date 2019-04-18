@@ -1,0 +1,39 @@
+package kr.sys4u.spring.instagram.web.controller.member;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import kr.sys4u.spring.instagram.core.dto.member.Member;
+import kr.sys4u.spring.instagram.core.service.member.MemberService;
+
+@Controller
+public class MemberController {
+	
+	@Autowired
+	MemberService memberService;
+	
+	//로그인
+	@PostMapping("/memLogin.do")
+	public String login(Model model, HttpServletRequest request,@RequestParam("memLoinID") String memLoinID,@RequestParam("memLoinPass") String memLoinPass) {
+		String result="";
+		
+		Member preMember = memberService.LoginCheck(memLoinID);
+		if (preMember.getPwd().equals(memLoinPass)) {
+			model.addAttribute("message", "로그인 성공");
+			 result="common/common";
+		}else{
+			model.addAttribute("message", "로그인 실패");
+			result="member/login";
+		}
+		model.addAttribute("context",request.getContextPath());
+		return result;
+	}
+	
+
+}

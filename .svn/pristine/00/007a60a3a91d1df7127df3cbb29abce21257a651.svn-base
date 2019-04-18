@@ -1,0 +1,48 @@
+package kr.sys4u.spring.instagram.web.controller.member;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.sys4u.spring.instagram.core.dto.member.Member;
+
+@Controller
+//@RequestMapping("/myPage.do")
+public class MemberPageController {
+	
+	@GetMapping("/myPage.do")  
+	public @ResponseBody Map<String, Object> memberMyPage(@RequestParam ("memberNo") int memberNo){
+		
+		Map<String, Object> map = new HashMap<>();
+		System.out.println("memberNo"+ memberNo);
+		
+		Member member = new Member();
+		member.setMessage("상태메세지");
+		map.put("member", member);
+		return map;
+		
+	}
+	
+//	public @ResponseBody Map<String, Object> memberMyPage(@PathVariable("memberNo") int memberNo){
+//		
+//		Map<String, Object> map = new HashMap<>();
+//		System.out.println("memberNo"+ memberNo);
+//		
+//		Member member = new Member();
+//		member.setMessage("상태메세지");
+//		map.put("member", member);
+//		return map;
+//		
+//	}
+
+
+}

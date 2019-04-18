@@ -1,0 +1,196 @@
+(function(global, doc){
+   
+   $.namespace("instagram.body.list");
+   instagram.body.list = function(){
+	  console.log("------constructing list");
+	  var that = this;
+      $("#eventSource").on("goToNext", function(data){ //next
+  		that.requestList(data.row, data.hashtag, _no);
+      });
+
+      $("#eventSource").on("goToFind", function(data){ //find
+    	that.clearData();
+  		that.requestList(data.row, data.hashtag, _no); //session값 전달x
+      });
+      
+      this.initialize();
+   };
+   
+   instagram.body.list.prototype.initialize = function(){
+	   console.log("------lnitialize the list")
+	  this.clearData();
+      this.requestList();
+   };
+   
+   instagram.body.list.prototype.clearData = function(){
+	      $("#content").empty();
+	   };
+   
+   instagram.body.list.prototype.destroy = function(){
+      console.log("------destroy the list");
+      this.clearData();
+      
+   };
+   
+   instagram.body.list.prototype.requestList = function(row, hashtag, member_no){
+   	  console.log("request");
+      row = !row ? 1 : row;
+      var that = this;
+
+      $.get(`/sys4u/list.do?hashtag=${hashtag}&row=${row}`) 
+  	  .done(function(data) {
+	  	that.render(data);
+	  	console.log(data);
+	  	new instagram.body.list.more(data[0].totalCount, hashtag);
+	  })
+	  .fail(function() {
+		  //3가지 message가 data로 들어옴, 적절한 처리필요
+	  });
+   }
+
+   instagram.body.list.prototype.render = function(posts){
+      console.log("render");
+      var that = this;
+
+      var i = typeof $('.postDiv').last().data("row") !== "undefined" ? $(".postDiv").last().data("row")+1 : 1 ;
+      $.each(posts,(key, post)=>{
+         var postsDiv = document.createElement("div");
+         innerHTML = this.postrender(post);
+         $(postsDiv).append(innerHTML);
+         $(postsDiv).attr({class:"postDiv"});
+         $(postsDiv).attr({"data-row":i});
+         $('#content').append(postsDiv);
+         i++;
+      })
+      //페이지 정보로 처리 변경
+      new instagram.body.list.find(that);
+   };
+   
+   instagram.body.list.prototype.hashtagrender = function(hashtagList){
+       var innerHTML = "";
+       $.each(hashtagList,(key, hashtag)=>{
+           innerHTML += `<span class="goToFind" id="${hashtag}"> ${hashtag} </span> `;
+         });
+       
+       return innerHTML;
+   };
+
+   instagram.body.list.prototype.replyrender = function(postReplyList){
+       var innerHTML = "";
+       $.each(postReplyList,(key, reply)=>{
+           innerHTML += `
+        	   <div>
+        	   		<img src="${_cpath}/static-root/images/upload/member/default/p0.png" width="20px" height="20px" style="border-radius: 100%"/>
+        	   		<span class="bold">${reply.userId}</span> ${reply.content}
+        	   </div>
+        	   `;
+         });
+
+       return innerHTML;
+   };
+   
+   instagram.body.list.prototype.postrender = function(post){
+	   var liked = "";
+	   liked = (post.postLike.liked*1) > 0 ? `<img src="${_imageUrl}/common/liked1.png" width="25px" height="25px"/>` : `<img src="${_imageUrl}/common/liked0.png" width="25px" height="25px"/>`;
+	   var likeUser = "";
+	   likeUser = post.postLike.totalCount > 1 ?
+			   post.postLike.recentLikedUser + "님 외 " + (post.postLike.totalCount*1-1) + "명이 좋아합니다.<br/>"
+			   : post.postLike.totalCount > 0 ?
+					   post.postLike.recentLikedUser + "님이 좋아합니다.<br/>"
+					   : "";
+
+	   var likeCount = post.postLike.totalCount > 0 ? "좋아요 " + post.postLike.totalCount + "개 " : "";
+	   var hashtagList = post.hashtagList.length > 0 ? this.hashtagrender(post.hashtagList) + "<br/>"  : "";
+	   var replyList = post.postReplyList.length > 0 ? post.postReplyList.length + "개 댓글이 있습니다.<br/>" + this.replyrender(post.postReplyList) : "";
+	   //<span class="goToMypage" value="${post.member.no}"><img src="${_imageUrl}/${post.member.memberImage.name}.${post.member.memberImage.extension}" width="30px" height="30px"/>
+	   //<img src="${_cpath}/${post.postImage.path}/${post.postImage.name}.${post.postImage.extension}" width="100%" height="100%"/>
+	   return `
+		   <div class="post">
+		   		<div class="writer">
+				   <span class="goToMypage" value="${post.member.no}"><img class="memberImage" src="${_cpath}/${post.member.memberImage.path}/${post.member.memberImage.name}.${post.member.memberImage.extension}"></span>
+					<span class="bold">${post.member.loginID}</span>
+			    </div>
+		   		<div class="image">
+		   		   <img src="${_cpath}/${post.postImage.path}/${post.postImage.name}.${post.postImage.extension}" width="100%" height="100%"/>
+		   		</div>
+		   		<div class="social">
+		   			<div class="icon">
+				   		<span class="liked">${liked}</span>
+		   			</div>
+				   		${likeCount}
+		   			<div>
+			   		<div class="content">
+			   			<span class="bold">${post.member.loginID}</span> ${post.content}
+			   		</div>
+				   ${hashtagList}
+				   ${likeUser}
+				   ${replyList}
+			    </div>
+		   </div>
+	   `;
+   };
+   
+   $.namespace("instagram.body.list.more");  
+   instagram.body.list.more = function(totalCount, hashtag){
+      console.log("more");
+      this.destroy();
+      this.initialize(totalCount, hashtag);
+   };
+   
+   instagram.body.list.more.prototype.initialize = function(totalCount, hashtag){
+	      console.log("more initialize");
+	      if($('.postDiv').last().data("row") < totalCount ){
+	    	  console.log("not last data");
+	    	  this.render(hashtag);
+	      }
+   };
+	   
+   instagram.body.list.more.prototype.destroy = function(){
+      console.log("more destroy");
+      $("#btnMore").remove();
+   };
+
+   instagram.body.list.more.prototype.render = function(hashtag){
+      console.log("more makeHtml");
+      innerHTML = `<div id="btnMore">더보기 ▼</div>`;
+      var that = this;
+      
+      //moreBtnDiv에 append
+      $('#content').append(innerHTML);
+      
+      $('#btnMore').on('click', function() {
+   	   //마지막 row값으로 instagram.body.list render
+    	  var row = $('.postDiv').last().data("row")+1;
+    	  $("#eventSource").trigger({
+    		  type : "goToNext",
+    		  row : row,
+    		  hashtag : hashtag,
+    		  no : _no
+    	  });
+    	  that.destroy();
+      })
+   };
+   
+   $.namespace("instagram.body.list.find");
+   instagram.body.list.find = function(that){
+	   this.initialize(that);
+   }
+   
+   instagram.body.list.find.prototype.initialize = function(that){
+      var hashArray = document.querySelectorAll('.goToFind');
+      for(var i=0; i<hashArray.length; i++){
+		  console.log("for start");
+		  hashArray[i].addEventListener('click',function(){
+	           var hashtag = this.getAttribute('id');
+		           console.log(that);
+		           that.destroy();
+	               that.request(1, hashtag, _no);
+       })
+      }
+   }
+   
+//   $('#btnMore').click(function () {
+//	   $('#eventSource').trigger('click');
+//   };
+
+}(window, document));

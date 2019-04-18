@@ -1,0 +1,37 @@
+(function(w, doc, $) {
+	$(doc).ready(function(){
+		var cpath= $('#cpath').val();
+		
+			var memLogin = function() {
+				alert("memLogin");
+				var form = document.loginForm;
+				form.action= cpath+"/memLogin.do";
+			    form.submit();
+			};
+			
+			var memJoin= function() {
+				alert("회원가입");
+//				var pageVal = $(this).attr("data-x");
+//				location.href = pageVal;
+			}
+			
+//			var pageRowNum= function() {
+//				var url = $(this).attr('data-url');
+//				var searchKey= $(this).attr('data-searchKey');
+//				var searchValue= $(this).attr('data-searchValue');
+//				var pageNum= $(this).attr('data-pageNum');
+//				var pageRowNum= $(this).val();
+//				var result = url+"?searchKey="+searchKey+"&searchValue="
+//						+searchValue+"&pageNum="+pageNum
+//						+"&pageRowNum="+pageRowNum;
+//				location.href = result;
+//			}
+			
+		
+			$('#memLogin').on('click',memLogin);
+			$('#memJoin').on('click',memJoin);
+
+	})
+
+}(window, document, jQuery));
+

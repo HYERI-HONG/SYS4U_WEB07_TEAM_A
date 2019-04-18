@@ -1,0 +1,46 @@
+"use strict";
+var common = common || {};
+common =(()=>{
+	var init =x=>{
+		console.log('Welcome To Our New Instagram');
+		$.getScript(x+'/static-root/js/common/router.js',
+				()=>{ 
+					$.extend(new Session(x)); 
+					common.main.mainPage(x);
+		})
+	};
+	return {init : init};
+})();
+
+common.main = {
+	mainPage : x=>{
+		
+		$.when(
+				$.getScript($.script()+'/member/hong.js'),
+				$.getScript($.script()+'/member/jeong.js'),
+				$.getScript($.script()+'/member/shin.js'),
+				$.getScript($.script()+'/post/hong.js'),
+				$.getScript($.script()+'/post/jeong.js'),
+				$.getScript($.script()+'/post/shin.js'),
+				$.Deferred(y=>{
+					$(y.resolve);
+				})
+		).done(x=>{
+			$('#wrapper').html(header()).append(content()).append(footer());
+		});	
+	}
+};
+
+var header = ()=>{
+	
+	$('<h2/>').html('header').appendTo($('#header'));
+}
+
+var content = x =>{
+	jeong.init($.cpath());
+}
+var footer = ()=>{
+	
+	$('<h2/>').html('footer').appendTo($('#footer'));
+	
+}

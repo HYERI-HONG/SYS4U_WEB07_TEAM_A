@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.sys4u.spring.instagram.core.repository.post.PostReplyRepository">
+  <resultMap id="BaseResultMap" type="kr.sys4u.spring.instagram.core.dto.post.PostReply">
+    <id column="NO" jdbcType="DECIMAL" property="no" />
+    <result column="POST_NO" jdbcType="DECIMAL" property="postNo" />
+    <result column="MEMBER_NO" jdbcType="DECIMAL" property="memberNo" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+    <result column="DELETED" jdbcType="CHAR" property="deleted" />
+    <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="UPDATED_DATE" jdbcType="TIMESTAMP" property="updatedDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    NO, POST_NO, MEMBER_NO, CONTENT, DELETED, CREATED_DATE, UPDATED_DATE
+  </sql>
+  <select id="selectByExample" parameterType="kr.sys4u.spring.instagram.core.dto.post.PostReplyExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from NEWBIE.POST_REPLY
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Short" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from NEWBIE.POST_REPLY
+    where NO = #{no,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Short">
+    delete from NEWBIE.POST_REPLY
+    where NO = #{no,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="kr.sys4u.spring.instagram.core.dto.post.PostReplyExample">
+    delete from NEWBIE.POST_REPLY
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="kr.sys4u.spring.instagram.core.dto.post.PostReply">
+    insert into NEWBIE.POST_REPLY (NO, POST_NO, MEMBER_NO, 
+      CONTENT, DELETED, CREATED_DATE, 
+      UPDATED_DATE)
+    values (#{no,jdbcType=DECIMAL}, #{postNo,jdbcType=DECIMAL}, #{memberNo,jdbcType=DECIMAL}, 
+      #{content,jdbcType=VARCHAR}, #{deleted,jdbcType=CHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{updatedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="kr.sys4u.spring.instagram.core.dto.post.PostReply">
+    insert into NEWBIE.POST_REPLY
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="no != null">
+        NO,
+      </if>
+      <if test="postNo != null">
+        POST_NO,
+      </if>
+      <if test="memberNo != null">
+        MEMBER_NO,
+      </if>
+      <if test="content != null">
+        CONTENT,
+      </if>
+      <if test="deleted != null">
+        DELETED,
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE,
+      </if>
+      <if test="updatedDate != null">
+        UPDATED_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="no != null">
+        #{no,jdbcType=DECIMAL},
+      </if>
+      <if test="postNo != null">
+        #{postNo,jdbcType=DECIMAL},
+      </if>
+      <if test="memberNo != null">
+        #{memberNo,jdbcType=DECIMAL},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=CHAR},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedDate != null">
+        #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="kr.sys4u.spring.instagram.core.dto.post.PostReplyExample" resultType="java.lang.Long">
+    select count(*) from NEWBIE.POST_REPLY
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update NEWBIE.POST_REPLY
+    <set>
+      <if test="record.no != null">
+        NO = #{record.no,jdbcType=DECIMAL},
+      </if>
+      <if test="record.postNo != null">
+        POST_NO = #{record.postNo,jdbcType=DECIMAL},
+      </if>
+      <if test="record.memberNo != null">
+        MEMBER_NO = #{record.memberNo,jdbcType=DECIMAL},
+      </if>
+      <if test="record.content != null">
+        CONTENT = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        DELETED = #{record.deleted,jdbcType=CHAR},
+      </if>
+      <if test="record.createdDate != null">
+        CREATED_DATE = #{record.createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedDate != null">
+        UPDATED_DATE = #{record.updatedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update NEWBIE.POST_REPLY
+    set NO = #{record.no,jdbcType=DECIMAL},
+      POST_NO = #{record.postNo,jdbcType=DECIMAL},
+      MEMBER_NO = #{record.memberNo,jdbcType=DECIMAL},
+      CONTENT = #{record.content,jdbcType=VARCHAR},
+      DELETED = #{record.deleted,jdbcType=CHAR},
+      CREATED_DATE = #{record.createdDate,jdbcType=TIMESTAMP},
+      UPDATED_DATE = #{record.updatedDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="kr.sys4u.spring.instagram.core.dto.post.PostReply">
+    update NEWBIE.POST_REPLY
+    <set>
+      <if test="postNo != null">
+        POST_NO = #{postNo,jdbcType=DECIMAL},
+      </if>
+      <if test="memberNo != null">
+        MEMBER_NO = #{memberNo,jdbcType=DECIMAL},
+      </if>
+      <if test="content != null">
+        CONTENT = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        DELETED = #{deleted,jdbcType=CHAR},
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedDate != null">
+        UPDATED_DATE = #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where NO = #{no,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="kr.sys4u.spring.instagram.core.dto.post.PostReply">
+    update NEWBIE.POST_REPLY
+    set POST_NO = #{postNo,jdbcType=DECIMAL},
+      MEMBER_NO = #{memberNo,jdbcType=DECIMAL},
+      CONTENT = #{content,jdbcType=VARCHAR},
+      DELETED = #{deleted,jdbcType=CHAR},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      UPDATED_DATE = #{updatedDate,jdbcType=TIMESTAMP}
+    where NO = #{no,jdbcType=DECIMAL}
+  </update>
+</mapper>

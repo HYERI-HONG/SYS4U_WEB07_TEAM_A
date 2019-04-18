@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JS Component Prototype</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+	$.namespace = function() {
+		var a = arguments, o = null, i, j, d;
+		for (i = 0; i < a.length; i = i + 1) {
+			d = a[i].split(".");
+			o = window;
+			for (j = 0; j < d.length; j = j + 1) {
+				o[d[j]] = o[d[j]] || {};
+				o = o[d[j]];
+			}
+		}
+		return o;
+	};
+</script>
+<script src="http://localhost:8080/sys4u/static-root/js/prototype/js-component-prototype.js"></script>
+</head>
+<body>
+	<div id="prototype-container">
+		<!-- Prototype Component Container -->
+	</div>
+	
+	<script>
+		$(function(){
+			$("#prototype-container").empty();
+			
+			var parentComp = new com.sys4u.ParentComponent();
+			parentComp.initialize();
+			parentComp.render("#prototype-container");
+		})
+	</script>
+</body>
+</html>

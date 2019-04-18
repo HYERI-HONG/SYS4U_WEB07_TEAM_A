@@ -1,0 +1,29 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>SYSTAGRAM</title>
+	
+	<!-- 외부 라이브러리 -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<!-- 공통 -->
+ 	<script src="${context}/static-root/js/common/common.js"></script> 
+ 	<link rel="stylesheet" href="${context}/static-root/css/common.css" />
+ 	<script src="${context}/static-root/js/common/main.js"></script>
+ 	<!-- 개인  -->
+ 	<script src="${context}/static-root/js/post/jeong.js"></script>
+ 	
+
+</head>
+<body>
+	<div id="wrapper">
+		<div id = header></div>
+		<div id = content></div>
+		<div id = footer></div>	
+		<div id = "eventSource"></div>
+	</div>
+</body>
+</html>

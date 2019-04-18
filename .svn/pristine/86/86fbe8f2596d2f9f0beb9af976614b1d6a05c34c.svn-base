@@ -1,0 +1,160 @@
+$.namespace = function() {
+		var a = arguments, o = null, i, j, d;
+		for (i = 0; i < a.length; i = i + 1) {
+			d = a[i].split(".");
+			o = window;
+			for (j = 0; j < d.length; j = j + 1) {
+				o[d[j]] = o[d[j]] || {};
+				o = o[d[j]];
+			}
+		}
+
+		return o;
+	};
+
+(function(w, doc, $) {
+	$(doc).ready(function() {
+				
+				//contextPath 구하기
+				var getContextPath = function () {
+					return w.location.pathname.substring(0, w.location.pathname.indexOf("/",2));
+				};
+				var cpath= getContextPath();
+				sessionStorage.setItem("cpath", cpath);
+//			sessionStorage.setItem("domain", "webisfree.com");
+//			sessionStorage.getItem("domain");
+//			sessionStorage.removeItem("domain");
+//			sessionStorage.clear();
+				
+				//---------------------------------------------
+				
+				$.namespace("instagram.MemLogin");
+				instagram.MemLogin =  function(){
+					this.initialized();
+					var that = this;
+					$("#eventSource").on("instagram.MemLogin.initialized", function(e){
+						that.fetchList();
+					});
+				};
+				
+				instagram.MemLogin.prototype.initialized = function(){
+					console.log("initialized");
+				};
+				
+				instagram.MemLogin.prototype.destroy = function(){
+					console.log("destroyed");
+				};
+				
+				instagram.MemLogin.prototype.fetchList = function(){
+					console.log("fetch list with ajax call");
+					var form = document.loginForm;
+					form.action = sessionStorage.getItem("cpath") + "/memLogin.do";
+					form.submit();
+				};
+
+				var memLogin = new instagram.MemLogin();
+				
+				//---------------------------------------------
+				$.namespace("instagram.MemJoinPage");
+				instagram.MemJoinPage = function() {
+					this.initialized();
+					var that = this;
+					$("#eventSource").on("instagram.MemJoinPage.initialized", function(e){
+						that.fetch();
+					});
+				};
+				
+				instagram.MemJoinPage.prototype.initialized = function(){
+					console.log("initialized");
+				};
+				
+				instagram.MemJoinPage.prototype.destroy = function(){
+					console.log("destroyed");
+				};
+				
+				instagram.MemJoinPage.prototype.fetch = function(){
+					location.href = sessionStorage.getItem("cpath") + "/memJoinPage.do";
+				};
+
+				var memJoinPage = new instagram.MemJoinPage();
+				
+				//---------------------------------------------
+
+				$.namespace("instagram.MemInsert");
+				instagram.MemInsert = function() {
+					this.initialized();
+					var that = this;
+					$("#eventSource").on("instagram.MemInsert.initialized", function(e){
+						that.fetch();
+					});
+				};
+				
+				instagram.MemInsert.prototype.initialized = function(){
+					console.log("initialized");
+				};
+				
+				instagram.MemInsert.prototype.destroy = function(){
+					console.log("destroyed");
+				};
+				
+				instagram.MemInsert.prototype.fetch = function(){
+					var form = document.JoinForm;
+					form.action = sessionStorage.getItem("cpath") + "/memJoin.do";
+					form.submit();
+				};
+
+				var memInsert = new instagram.MemInsert();
+
+				//-------------------------------------------------------
+//				var dupCheck = function() {
+//					var dupId = $('#memId').val();
+//					if (dupId == null || dupId == "") {
+//						alert("이름을 입력해주세요.");
+//						return;
+//					}
+//					$.ajax({
+//						type : "POST",
+//						url : sessionStorage.getItem("cpath") + "/idDupcheck.do",
+//						data : {
+//							dupId : dupId
+//						},
+//						datatype : "json",
+//						success : function(data) {
+//							var check = data.trim();
+//							if (check == 'Y') { // 이름이 겹친경우
+//								var r = confirm("같은 이름이 이미 존재합니다. 그래도"
+//										+ dupName + "으로 진행 하시겠습니까?");
+//								if (r == true) {
+//									localStorage.setItem('dupCheck', 'Y');
+//								} else if (r == false) {
+//									localStorage.clear();
+//								}
+//							} else {
+//								localStorage.setItem('dupCheck', 'Y');
+//								alert("중복되지 않는 이름입니다.");
+//							}
+//						},
+//						error : function(e) {
+//							alert("에러발생");
+//						}
+//					});
+//				}
+				
+				$(function(){
+					//login.jsp
+					  $("#memLogin").on("click", function(e){
+						  $("#eventSource").trigger("instagram.MemLogin");
+					  });
+					  
+					  $("#memJoinPage").on("click", function(e){
+						  $("#eventSource").trigger("instagram.MemJoinPage");
+					  });
+					  
+					 //join.jsp
+					  $("#memInsert").on("click", function(e){
+						  $("#eventSource").trigger("instagram.MemInsert");
+					  });
+					});
+			})
+
+}(window, document, jQuery));

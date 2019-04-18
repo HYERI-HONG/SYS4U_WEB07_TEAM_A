@@ -1,0 +1,39 @@
+var jeong = jeong || {};
+jeong = (() => {
+    let init = x => { 
+    	jeong.main.loadPage(x);
+    };
+    return { init: init };
+})();
+
+jeong.main = {
+		
+	loadPage : x =>{
+		
+		$.ajax({
+            url : x+'/list.do',
+            method : 'GET',
+            contentType : 'application/json',
+            success : d=>{
+            	jeong.main.viewList(d);
+            },
+            error : (m1,m2,m3)=>{
+               alert("error발생");
+            }
+         });      
+	},
+	
+	viewList : x =>{
+		var row = "";
+		console.log(x);
+		console.log(x.list[1].content);
+		$.each(x.list,(key, value)=>{
+			console.log(key);
+			console.log(value);
+			row += value.no + "<br/>";
+		})
+		
+		$('<h2/>').html(row).appendTo($('#content'));
+		
+	}	
+};

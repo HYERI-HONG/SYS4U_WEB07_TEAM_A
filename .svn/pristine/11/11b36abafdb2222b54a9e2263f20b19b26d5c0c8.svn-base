@@ -1,0 +1,90 @@
+(function(global, doc) {
+	
+	global.onload = function(){
+		
+		//header
+		$.namespace("instagram.Header");
+		instagram.Header = function(){
+			console.log("instagram.Header");
+		};
+		instagram.Header.prototype.initialize = function(){
+			console.log("Header : initialize()");
+			//nothing to do for now
+		};
+		instagram.Header.prototype.render =  function(){
+			console.log("Header : render()");
+		
+			$('<div/>').attr({id:'header_div'}).append(
+					$('<a/>').addClass('no_decoration_atag').attr({id:'goHome'}).append(
+							$('<div/>').attr({id:'header_logo'}).append(
+									$('<span/>').attr({id:'header_icon_logo'}),
+									$('<span/>').attr({id:'header_icon_seperator'}),
+									$('<span/>').attr({id:'header_icon_brandName'})
+							)
+					)
+			).appendTo($('#header')) 
+			
+			
+		};
+		
+		//footer
+		$.namespace("instagram.Footer");
+		instagram.Footer =  function(){
+			console.log("instagram.Footer");
+			
+		};
+		instagram.Footer.prototype.initialize = function(){
+			console.log("Footer : initialize()");
+			//nothing to do for now
+		};
+		instagram.Footer.prototype.render =  function(){
+			console.log("Footer : render()");
+			
+			$('#footer').append($('<h2/>').html('footer'));
+		
+		};
+		
+		//main
+		$.namespace("instagram.Main");
+		instagram.Main = function(){
+			
+			console.log("instagram.Main");
+			this.components = [];
+		};
+		
+		instagram.Main.prototype.initialize = function(){
+			console.log("Main : initialize()");
+			
+			var header = new instagram.Header();
+			header.initialize();
+			this.components.push(header);
+			
+			var body = new instagram.body.list();
+			this.components.push(body);
+			
+			var footer = new instagram.Footer();
+			footer.initialize();
+			this.components.push(footer);
+			
+		};
+		
+		instagram.Main.prototype.render = function(){
+			
+			console.log("Main : render()");
+			for(var i = 0 ; i < this.components.length ; i ++){
+				var component = this.components[i];
+				component.render();
+			}
+			
+			
+		};
+		instagram.Main.prototype.destroy = function(){
+			console.log("Main : destroy()");
+			//nothing to do for now
+		};
+
+		var main = new instagram.Main();
+		main.initialize();
+		main.render();
+	}
+}(window, document));

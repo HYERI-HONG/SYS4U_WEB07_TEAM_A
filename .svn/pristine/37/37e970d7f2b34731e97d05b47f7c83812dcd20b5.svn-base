@@ -1,0 +1,84 @@
+(function(global, doc) {
+	
+	global.onload = function(){
+		
+		$.namespace("instagram.Header");
+		instagram.Header = function(){
+			console.log("instagram.Header");
+			this.initialize();
+		};
+		instagram.Header.prototype.initialize = function(){
+			console.log("Header : initialize()");
+			//nothing to do for now
+		};
+		instagram.Header.prototype.render =  function(){
+			console.log("Header : render()");
+		
+			
+			
+			$('#header').append(
+					$('<div/>').attr({id:'header_div', style:'margin: 0 15%'}).append(
+							$('<div/>').attr({id:'header_logo'})
+					)
+			);
+			
+		};
+		
+		$.namespace("instagram.Footer");
+		instagram.Footer =  function(){
+			console.log("instagram.Footer");
+			this.initialize();
+		};
+		instagram.Footer.prototype.initialize = function(){
+			console.log("Footer : initialize()");
+			//nothing to do for now
+		};
+		instagram.Footer.prototype.render =  function(){
+			console.log("Footer : render()");
+			
+			$('#footer').append($('<h2/>').html('footer'));
+		
+		};
+		
+		$.namespace("instagram.Main");
+		instagram.Main = function(){
+			
+			console.log("instagram.Main");
+			this.components = [];
+			this.initialize();
+		};
+		
+		instagram.Main.prototype.initialize = function(){
+			console.log("Main : initialize()");
+			
+			var header = new instagram.Header();
+			this.components.push(header);
+			
+			//var body = new instagram.body.list();
+			//this.components.push(body);
+			
+			var footer = new instagram.Footer();
+			this.components.push(footer);
+			
+			this.render();
+		};
+		
+		instagram.Main.prototype.render = function(){
+			
+			console.log("Main : render()");
+			for(var i = 0 ; i < this.components.length ; i ++){
+				var component = this.components[i];
+				component.render();
+			}
+			
+			
+		};
+		instagram.Main.prototype.destroy = function(){
+			console.log("Main : destroy()");
+			//nothing to do for now
+		};
+
+		var main = new instagram.Main();
+		
+	}
+}(window, document));

@@ -1,0 +1,30 @@
+package kr.sys4u.spring.instagram.web.controller.post;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.sys4u.spring.instagram.core.dto.post.Post;
+import kr.sys4u.spring.instagram.core.service.post.PostService;
+import kr.sys4u.spring.instagram.web.controller.AbstractController;
+
+@Controller
+public class PostDetailController extends AbstractController{
+
+	@Autowired
+	private PostService postService;
+	
+	@GetMapping("detail.do")
+	public @ResponseBody Post list(@RequestBody Map<String, Object> postRequest) {
+		LOGGER.debug("jsonData : " + postRequest);
+		LOGGER.debug("post_no : " + postRequest.get("postNo"));
+		LOGGER.debug("memeber_no : " + postRequest.get("memberNO"));
+		Post posts = postService.findOne(postRequest);
+		
+		return posts;
+	}
+}

@@ -1,0 +1,21 @@
+package kr.sys4u.spring.instagram.core.dto.post;
+
+import java.sql.Timestamp;
+import java.util.List;
+import lombok.Data;
+
+@Data
+public class Post {
+
+    private int no;
+    private int memberNo;
+    private int content;
+    private Timestamp createdDate;
+    private Timestamp updatedDate;
+    private PostImage postImage;
+    private List<PostReply> postReplyList;
+    private PostLike postLike;
+    private List<String> hashtag;
+    
+    
+}

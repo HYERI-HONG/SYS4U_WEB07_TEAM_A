@@ -1,0 +1,52 @@
+(function(global, doc){
+	$.namespace("com.sys4u.ParentComponent");
+	com.sys4u.ParentComponent = function() {
+		this.children = [];
+		this.template = `
+			<h2>I'am Parent Component</h2><BR>
+			<div id='children-container'></div>
+		`;
+	};
+	
+	com.sys4u.ParentComponent.prototype.initialize = function(){
+		//원래는 ajax로 데이터를 가져와야 하나 지금은 mock data로 화면을 그리는 데 집중한다.
+		var resultChildren = [
+			{"id":"1", "name":"child1"},
+			{"id":"2", "name":"child2"},
+		]
+		
+		for(var i = 0 ; i < resultChildren.length ; i ++){
+			var child = resultChildren[i];
+			var childComp = new com.sys4u.ChildComponent(child["id"], child["name"]);
+			this.children.push(childComp);
+		}
+	};
+	
+	com.sys4u.ParentComponent.prototype.render = function(divId){
+		$(divId).append(this.template);
+		
+		for(var i = 0 ; i < this.children.length ; i ++){
+			var child = this.children[i];
+			child.render('#children-container');
+		}
+	};
+	
+	$.namespace("com.sys4u.ChildComponent");
+	com.sys4u.ChildComponent = function(id, name){
+		this.id = id;
+		this.name = name;
+	};
+	
+	com.sys4u.ChildComponent.prototype.initialize = function(){
+	};
+	
+	com.sys4u.ChildComponent.prototype.getTemplate = function(){
+		return `
+			<h2 id='${this.id}'>I'am ChildComponent. My Name is ${this.name}</h2>
+		`;
+	};
+	
+	com.sys4u.ChildComponent.prototype.render = function(divId){
+		$(divId).append(this.getTemplate());
+	};
+}(window, document))

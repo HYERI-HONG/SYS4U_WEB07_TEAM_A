@@ -1,0 +1,17 @@
+package kr.sys4u.spring.instagram.core.repository.post;
+
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+import kr.sys4u.spring.instagram.core.dto.post.PostLike;
+
+@Repository
+public interface PostLikeRepository {
+
+	 public int insert(PostLike postlike);
+	 public int delete(PostLike postLike);
+	 
+	 //totalCount, liked, recentLikedUser한번에 가져오기
+	 public String selectRecentLikedUser(Map<String,String> parm);
+   
+}

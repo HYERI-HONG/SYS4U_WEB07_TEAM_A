@@ -1,0 +1,57 @@
+(function(global, doc){
+	
+	$.namespace("instagram.body.myPage");
+	instagram.body.myPage = function(){
+		this.memberNo;
+		console.log('mypage');
+		
+	};
+	
+	instagram.body.myPage.prototype.initialize = function(memberNo){
+		this.memberNo = memberNo;
+		
+		$.getJSON(_cpath+'/myPage.do?memberNo='+memberNo, map=>{
+				
+			 	console.log(map.member.no);
+			 	console.log(map.member.loginID);
+			 	console.log(map.member.password);
+			 	console.log(map.member.message);
+			 	console.log(map.member.deleted);
+			 	console.log(map.member.createdDate);
+			 	console.log(map.member.updatedDate);
+			
+				console.log(map.member.memberImage.memberNo);
+				console.log(map.member.memberImage.path);
+				console.log(map.member.memberImage.name);
+				console.log(map.member.memberImage.extension);
+				console.log(map.member.memberImage.createdDate);
+				console.log(map.member.memberImage.updatedDate);
+				
+				$.each(map.posts,(i,j)=>{
+					
+					console.log(j.postNo);
+					console.log(j.postImagePath);
+					console.log(j.postImageName);
+					console.log(j.postImageExtension);
+					console.log(j.likeCount);
+					console.log(j.replyCount);
+					
+				});
+				
+			
+		});
+	};
+	instagram.body.myPage.prototype.render = function(){
+		
+		$('#content').empty();
+		$('<div/>').attr({id:'content_mypage'}).html(_userId + '님의 페이지입니다.').appendTo($('#content'));
+		
+		$('<input/>').attr({type:'button', id:'goToModifyPage',value:'회원정보수정'}).appendTo('#content');
+		
+		
+	};
+	instagram.body.myPage.prototype.destroy = function(){
+		
+	};
+	
+}(window, document));

@@ -1,0 +1,15 @@
+package kr.sys4u.spring.instagram.core.dto.post;
+
+import java.util.Date;
+
+import lombok.Data;
+
+@Data
+public class PostImage {
+    private Short postNo;
+    private String path;
+    private String name;
+    private String extension;
+    private Date createdDate;
+    private Date updatedDate;
+}

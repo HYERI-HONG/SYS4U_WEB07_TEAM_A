@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.sys4u.spring.instagram.core.repository.member.MemberPageRepository">
+
+	<resultMap id="Member" type="Member">
+		<result column="NO" property="no"/>
+		<result column="LOGINID" property="loginID"/>
+		<result column="PASSWORD" property="password"/>
+		<result column="MESSAGE" property="message"/>
+		<result column="DELETED" property="deleted"/>
+		<result column="CREATED_DATE" property="createdDate"/>
+		<result column="UPDATED_DATE" property="updatedDate"/>
+		<collection property="memberImage" ofType="MemberImage">
+			<result column="MEMBER_NO" property="memberNo"/>
+			<result column="PATH" property="path"/>
+			<result column="NAME" property="name"/>
+			<result column="EXTENSION" property="extension"/>
+			<result column="CREATED_DATE" property="createdDate"/>
+			<result column="UPDATED_DATE" property="updatedDate"/>
+		</collection>
+	</resultMap>
+	
+	<select id="findMemberByNo" resultMap="Member" parameterType="Integer">
+		SELECT M.NO, M.LOGINID, M.PASSWORD, M.MESSAGE, M.DELETED, M.CREATED_DATE, M.UPDATED_DATE, I.MEMBER_NO, I.PATH, I.NAME, I.EXTENSION, I.CREATED_DATE, I.UPDATED_DATE
+		FROM MEMBER M JOIN MEMBER_IMAGE I ON(M.NO = I.MEMBER_NO)
+		WHERE NO = #{memberNo}
+	</select>
+
+
+</mapper>

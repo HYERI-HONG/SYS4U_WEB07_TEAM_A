@@ -1,0 +1,79 @@
+package kr.sys4u.spring.instagram.web.controller.member;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+
+import kr.sys4u.spring.instagram.core.dto.member.Member;
+import kr.sys4u.spring.instagram.core.dto.member.MemberImage;
+import kr.sys4u.spring.instagram.core.service.member.MemberService;
+import kr.sys4u.spring.instagram.web.controller.AbstractController;
+
+@Controller
+public class MemberController extends AbstractController{
+	
+	@Autowired
+	MemberService memberService;
+	
+	//로그인
+	@PostMapping("/memLogin.do")
+	public String login(Model model, HttpServletRequest request,@RequestParam("memLoinID") String memLoinID,@RequestParam("memLoinPass") String memLoinPass) {
+		String result="";
+		Member preMember = memberService.LoginCheck(memLoinID);
+		if (preMember.getPwd().equals(memLoinPass)) {
+			model.addAttribute("message", "로그인 성공");
+			 result="common/main";
+		}else{
+			model.addAttribute("message", "로그인 실패");
+			result="member/login";
+		}
+		model.addAttribute("context",request.getContextPath());
+		return result;
+	}
+	
+	@GetMapping("/memJoinPage.do")
+	public String join() {
+		return "member/join";
+	}
+	
+	
+	@PostMapping("/memJoin.do")
+	@Transactional
+	public String fileupload(@RequestParam("id") String memId,
+			@RequestParam("pwd") String memPassword,
+			@RequestParam("message") String messageState,
+			@RequestPart("memberImage") MultipartFile file) throws IllegalStateException, IOException {
+		String uploadDir = environment.getProperty("fileupload-upload-dir");
+		File destFile = new File(uploadDir, file.getOriginalFilename());
+		file.transferTo(destFile);
+		
+		Member memberInsert = new Member();
+		memberInsert.setId(memId);
+		memberInsert.setPwd(memPassword);
+		
+		MemberImage memberImageInsert= new MemberImage();
+		memberImageInsert.setPath(uploadDir);
+		
+		String[] seperator = file.getOriginalFilename().split("\\.");
+		memberImageInsert.setName(seperator[0]);
+		memberImageInsert.setExtension(seperator[1]);
+		memberInsert.setMemberImage(memberImageInsert);
+		
+		return "member/login";
+	}
+	
+	
+
+}

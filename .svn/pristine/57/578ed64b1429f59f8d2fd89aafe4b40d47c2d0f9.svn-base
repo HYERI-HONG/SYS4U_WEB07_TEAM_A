@@ -1,0 +1,34 @@
+package kr.sys4u.spring.instagram.core.service.member;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import kr.sys4u.spring.instagram.core.dto.member.Member;
+import kr.sys4u.spring.instagram.core.dto.post.Post;
+import kr.sys4u.spring.instagram.core.repository.member.MemberPageRepository;
+
+public class MemberPageServiceImpl implements MemberPageService{
+
+	@Autowired
+	private MemberPageRepository memberPageRepository;
+	
+	@Override
+	public Map<String, Object> getMemberPage(int memberNo) {
+		
+		return null;
+	}
+
+	@Override
+	public Member getMemberByNo(int memberNo) {
+		
+		return null;
+	}
+
+	@Override
+	public Post getPostByMemberNo(int memberNo) {
+		
+		return null;
+	}
+
+}

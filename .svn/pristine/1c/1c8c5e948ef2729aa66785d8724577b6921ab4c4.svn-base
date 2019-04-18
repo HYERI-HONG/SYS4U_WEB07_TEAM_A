@@ -1,0 +1,15 @@
+package kr.sys4u.spring.instagram.core.dto.member;
+
+import java.util.Date;
+
+import lombok.Data;
+@Data
+public class Member {
+    private Short no;
+    private String id;
+    private String pwd;
+    private String message;
+    private String deleted;
+    private Date createdDate;
+    private Date updatedDate;
+}

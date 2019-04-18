@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.sys4u.spring.instagram.core.repository.post.PostLikeRepository">
+
+   <update id="likeyn" parameterType="Map">
+      MERGE INTO POST_LIKE
+      USING DUAL
+         ON (POST_NO = #{postNo} AND MEMBER_NO = #{memberNo})
+       WHEN MATCHED 
+       THEN UPDATE SET MEMBER_NO = member_no <!-- ON에서 참조하는 열은 수정할 수 없음 -->
+            DELETE WHERE POST_NO = #{postNo} AND MEMBER_NO = #{memberNo}
+       WHEN NOT MATCHED
+       THEN INSERT (NO, MEMBER_NO, POST_NO) VALUES (SEQ_LIKE_POST.NEXTVAL, #{memberNo}, #{postNo})
+   </update> 
+</mapper>

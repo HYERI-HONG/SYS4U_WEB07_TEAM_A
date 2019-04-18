@@ -1,0 +1,8 @@
+package kr.sys4u.spring.instagram.web.controller.post;
+
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class PostDetailController {
+
+}

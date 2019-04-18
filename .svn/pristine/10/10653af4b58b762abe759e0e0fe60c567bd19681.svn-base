@@ -1,0 +1,6 @@
+package kr.sys4u.spring.instagram.core.repository.member;
+
+public class MemberPageRepository {
+
+	
+}

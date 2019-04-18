@@ -1,0 +1,21 @@
+package kr.sys4u.spring.instagram.core.service.post;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+
+import kr.sys4u.spring.instagram.core.dto.post.Post;
+import kr.sys4u.spring.instagram.core.repository.post.PostRepository;
+
+@Configuration
+public class PostService {
+
+	@Autowired
+	private PostRepository postRepository;
+	
+	public List<Post> findList(){
+		
+		return postRepository.findAll();
+	}
+}

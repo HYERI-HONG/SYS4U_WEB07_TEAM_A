@@ -1,0 +1,46 @@
+package kr.sys4u.spring.instagram.web.controller.post;
+
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.sys4u.spring.instagram.core.dto.member.Member;
+import kr.sys4u.spring.instagram.core.dto.post.Post;
+import kr.sys4u.spring.instagram.core.service.post.PostService;
+import kr.sys4u.spring.instagram.web.controller.AbstractController;
+
+//search, list 처리
+@Controller
+public class PostListController extends AbstractController{
+	@Autowired
+	private PostService postService;
+	
+	@GetMapping("list.do")
+	public @ResponseBody List<Post> list(
+			HttpSession session,
+			@RequestParam(value="hashtag",required = false, defaultValue="") String hashtag,
+			@RequestParam(value="row",required = false, defaultValue="1") String strRow) { 
+		
+		int row = 1;
+		Member member = (Member) session.getAttribute("user");
+		int memberNo = member.getNo();
+
+		LOGGER.debug("memberNo : " + memberNo);
+		try {
+			row = Integer.parseInt(strRow);
+		} catch (Exception e) {
+			
+		}
+		LOGGER.debug("hashtag : " + hashtag);
+		LOGGER.debug("row : " + row);
+		LOGGER.debug("memberNo : " + memberNo);
+		
+		return postService.findList(hashtag, row, memberNo);
+	}
+}

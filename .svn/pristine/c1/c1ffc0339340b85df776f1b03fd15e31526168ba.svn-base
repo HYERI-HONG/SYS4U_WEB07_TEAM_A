@@ -1,0 +1,47 @@
+(function(w, doc) {
+	
+	$(doc).ready(function() {
+		
+		
+		 $.namespace("instagram.body.memUpdate"); 
+		 instagram.body.memUpdate = function() {
+			 console.log("11111");
+				this.initialize();
+				var that = this;
+				$("#eventSource").on("update", function(e) {
+					 console.log("33333");
+					that.fetch();
+				});
+			};
+			
+			instagram.body.memUpdate.prototype.initialize = function() {
+			};
+			instagram.body.memUpdate.prototype.destroy = function() {
+			};
+
+			instagram.body.memUpdate.prototype.fetch = function() {
+				alert("왜 안나오지????");
+				console.log("444444");
+			var password = $("#password").val();
+			var prepassword = $("#prepassword").val();
+			var password_H = $("#password_H").val();
+			if (prepassword!=password_H) {
+				alert("현재 사용하고 있는 비밀번호가 일치하지 않습니다. ");
+				return;
+			}
+			
+			var pwJ = /^[A-Za-z0-9]{4,12}$/; // 비밀번호 정규식 A-Z,a-z,0-9로
+			if (!(pwJ.test(password))) {
+				alert("비밀번호 정규식 A-Z,a-z,0-9로 시작하는  4~12자리 비밀번호 를 설정할수있습니다.");
+				return;
+			}
+			
+			
+			var form = document.modifiedForm;
+			form.action = _cpath + "/modifiedMem.do";
+			form.submit();
+		}; //end instagram.body.memUpdate.prototype.fetch
+		
+		var memUpdate = new instagram.body.memUpdate();
+	});
+}(window, document));

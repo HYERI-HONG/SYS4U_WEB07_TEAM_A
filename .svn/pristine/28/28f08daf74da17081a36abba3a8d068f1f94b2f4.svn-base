@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="kr.sys4u.spring.instagram.core.repository.member.MemberRepository">
+
+	<select id="findOne" resultType="Member" parameterType="String">
+		SELECT *
+		FROM MEMBER WHERE LOGINID = #{loginID}
+	</select>
+
+	<select id="duplcheck" resultType="int" parameterType="String">
+		SELECT
+		COUNT(*) FROM MEMBER WHERE LOGINID= #{dupId}
+	</select>
+
+
+	<insert id="insert" parameterType="Member">
+		INSERT INTO MEMBER (
+		NO, LOGINID, PASSWORD, MESSAGE, DELETED,
+		CREATED_DATE, UPDATED_DATE
+		) VALUES(
+		SEQ_MEMBER.NEXTVAL, #{loginID}, #{password}, #{message}, 'Y',
+		SYSDATE, SYSDATE
+		)
+	</insert>
+	
+	<insert id="insertImage"  parameterType="MemberImage">
+		INSERT INTO MEMBER_IMAGE (
+		MEMBER_NO, PATH, NAME, EXTENSION,
+		CREATED_DATE, UPDATED_DATE
+		) VALUES(
+		#{memberNo}, #{path}, #{name}, #{extension},
+		SYSDATE, SYSDATE
+		)
+	</insert>
+
+
+</mapper>

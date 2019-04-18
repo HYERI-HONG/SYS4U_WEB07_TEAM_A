@@ -1,0 +1,49 @@
+package kr.sys4u.spring.instagram.core.service.member;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import kr.sys4u.spring.instagram.core.dto.member.Member;
+import kr.sys4u.spring.instagram.core.repository.member.MemberPageRepository;
+
+@Service
+public class MemberPageService{
+
+	@Autowired
+	private MemberPageRepository memberPageRepository;
+	
+	public Map<String, Object> getMemberPage(int memberNo) {
+		
+		System.out.println("------------mypageService진입-------------");
+		Map<String, Object> memberPage = new HashMap<>();
+		
+		memberPage.put("member", getMemberByNo(memberNo));
+		memberPage.put("posts", getPostByMemberNo(memberNo));
+		
+		return memberPage;
+	}
+
+	private Member getMemberByNo(int memberNo) {
+		
+		System.out.println("-------------getMemberByNo------------");
+		Member member = memberPageRepository.findMemberByNo(memberNo);
+		if(member.getMemberImage().getPath()==null) {
+			System.out.println("프로필 사진이 없네!");
+		}
+		System.out.println("member :: "+member.toString());
+		System.out.println("memberImage :: "+member.getMemberImage().toString());
+		return member;
+	}
+
+	private List<?> getPostByMemberNo(int memberNo) {
+		
+		System.out.println("-------------getPostByMemberNo------------");
+		return memberPageRepository.findAllPostsWrittenByMember(memberNo);
+	}
+
+}

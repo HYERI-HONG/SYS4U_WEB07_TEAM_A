@@ -1,0 +1,23 @@
+package kr.sys4u.spring.instagram.core.repository.post;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+
+import kr.sys4u.spring.instagram.core.dto.post.Post;
+import kr.sys4u.spring.instagram.core.dto.post.PostRequest;
+
+@Repository
+public interface PostRepository {
+
+	public int insert(Post post);
+	public List<Post> findAll();
+	public List<Post> findSome(PostRequest postRequest);
+	public Post findOne(Map<String, Object> postRequest);
+	public Post findOne(String word);
+	public int update(Post post);
+	public int delete(Post post);
+	public boolean exists(String word);
+	public int count();
+}
